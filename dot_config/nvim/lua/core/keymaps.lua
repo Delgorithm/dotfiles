@@ -76,3 +76,23 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 
 -- Search and replace interactively
 vim.keymap.set("n", "<leader>si", [[:%s/]], { noremap = true, silent = false, desc = "Start search and replace" })
+
+-- Map <leader> ; to insert |
+-- Insertion mode
+vim.keymap.set("i", "<leader>;", "|", { noremap = true, silent = true, desc = "Insert | in insert mode" })
+-- Normal mode
+vim.keymap.set("n", "<leader>;", "i|<Esc>", { noremap = true, silent = true, desc = "Insert | in normal mode" })
+-- Visuel mode
+vim.keymap.set("v", "<leader>;", "c|<Esc>", { noremap = true, silent = true, desc = "Replace selection with |" })
+
+-- Open a link
+vim.keymap.set("n", "<leader>à", function()
+	local line = vim.fn.getline(".")
+	local url = string.match(line, "https?://[%w-_%.%?%.:/%+=&]+")
+	if url then
+		vim.fn.jobstart({ "open", url }, { detach = true })
+		print("Opening URL: " .. url)
+	else
+		print("No URL found on the current line")
+	end
+end, { noremap = true, silent = true, desc = "Open URL on the current line" })

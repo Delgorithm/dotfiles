@@ -15,9 +15,6 @@ return {
 				"prettier", -- ts/js formatter
 				"stylua", -- lua formatter
 				"eslint_d", -- ts/js linter
-				"shfmt", -- Shell formatter
-				"checkmake", -- linter for Makefiles
-				"ruff", -- Python linter and formatter
 			},
 			automatic_installation = true,
 		})
