@@ -26,5 +26,4 @@ require("lazy").setup({
 	require("plugins.indent-blankline"),
 	require("plugins.comment"),
 	require("plugins.lazygit"),
-	require("plugins.auto-pairs"),
 })

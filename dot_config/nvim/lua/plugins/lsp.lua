@@ -82,8 +82,6 @@ return {
 					"javascriptreact",
 					"typescript",
 					"typescriptreact",
-					"vue",
-					"svelte",
 					"markdown",
 				},
 			},
