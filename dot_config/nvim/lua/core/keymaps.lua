@@ -87,12 +87,21 @@ vim.keymap.set("v", "<leader>;", "c|<Esc>", { noremap = true, silent = true, des
 
 -- Open a link
 vim.keymap.set("n", "<leader>à", function()
-	local line = vim.fn.getline(".")
-	local url = string.match(line, "https?://[%w-_%.%?%.:/%+=&]+")
-	if url then
-		vim.fn.jobstart({ "open", url }, { detach = true })
-		print("Opening URL: " .. url)
-	else
-		print("No URL found on the current line")
-	end
+  local line = vim.fn.getline(".")
+  local url = string.match(line, "https?://[%w-_%.%?%.:/%+=&]+")
+  if url then
+    vim.fn.jobstart({ "open", url }, { detach = true })
+    print("Opening URL: " .. url)
+  else
+    print("No URL found on the current line")
+  end
 end, { noremap = true, silent = true, desc = "Open URL on the current line" })
+
+-- Leetcode
+local opts = { noremap = true, silent = true }
+
+vim.keymap.set("n", "<leader>ll", ":Leet list<CR>", opts) -- Ouvre la liste des problèmes
+vim.keymap.set("n", "<leader>ld", ":Leet daily<CR>", opts) -- Ouvre le problème du jour
+vim.keymap.set("n", "<leader>lr", ":Leet random<CR>", opts) -- Problème aléatoire
+vim.keymap.set("n", "<leader>ls", ":Leet submit<CR>", opts) -- Soumettre la solution
+vim.keymap.set("n", "<leader>lt", ":Leet test<CR>", opts) -- Exécuter le code de la question actuelle
