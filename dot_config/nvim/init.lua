@@ -29,7 +29,6 @@ require("lazy").setup({
   require("plugins.mini-snippets"),
   require("plugins.mini-icons"),
   require("plugins.mini-pairs"),
-  require("plugins.mini-animate"),
   require("plugins.autotag"),
   require("plugins.lazygit"),
   require("plugins.leetcode"),
