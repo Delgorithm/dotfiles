@@ -11,6 +11,5 @@ return {
   config = function(_, opts)
     local wk = require("which-key")
     wk.setup(opts)
-    -- Les raccourcis s'afficheront automatiquement
   end,
 }

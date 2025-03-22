@@ -4,23 +4,20 @@ return {
   config = function()
     local fterm = require("FTerm")
 
-    -- Configuration par défaut
     fterm.setup({
       border = "single",
       dimensions = {
-        height = 0.8, -- 80% de la hauteur de la fenêtre
-        width = 0.8, -- 80% de la largeur de la fenêtre
-        x = 0.5, -- Centré horizontalement
-        y = 0.5, -- Centré verticalement
+        height = 0.8,
+        width = 0.8,
+        x = 0.5,
+        y = 0.5,
       },
-      blend = 5, -- Transparence légère (0-100)
+      blend = 5,
     })
 
-    -- Raccourcis clavier pour ouvrir/fermer le terminal
     vim.keymap.set("n", "<leader>tt", fterm.toggle, { desc = "Toggle terminal" })
     vim.keymap.set("t", "<Esc><Esc>", fterm.toggle, { desc = "Toggle terminal" })
 
-    -- Lazygit dans un terminal flottant
     local lazygit = fterm:new({
       ft = "fterm_lazygit",
       cmd = "lazygit",
@@ -30,14 +27,11 @@ return {
       },
     })
 
-    -- Ajout d'un raccourci pour lazygit
     vim.keymap.set("n", "<leader>tg", function()
       lazygit:toggle()
     end, { desc = "Toggle Lazygit" })
 
-    -- Raccourci pour ouvrir un terminal avec une commande spécifique
     vim.keymap.set("n", "<leader>tr", function()
-      -- Demander une commande à exécuter
       vim.ui.input({ prompt = "Command: " }, function(cmd)
         if cmd and cmd ~= "" then
           fterm
