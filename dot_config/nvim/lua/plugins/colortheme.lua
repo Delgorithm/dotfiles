@@ -43,7 +43,7 @@ return {
       vim.cmd("colorscheme gruvbox")
     end
 
-    vim.o.background = "dark"
+    vim.o.background = "light"
     vim.cmd("colorscheme gruvbox")
 
     vim.keymap.set("n", "<leader>bg", toggle_theme, { noremap = true, silent = true })
