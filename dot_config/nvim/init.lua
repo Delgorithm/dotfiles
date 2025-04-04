@@ -38,4 +38,5 @@ require("lazy").setup({
   require("plugins.fterm"),
   require("plugins.carbon"),
   require("plugins.which-key"),
+  require("plugins.render-markdown"),
 })

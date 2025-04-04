@@ -20,19 +20,16 @@ return {
       "tsx",
       "css",
       "html",
+      "markdown",
+      "markdown_inline",
+      "latex",
     },
     auto_install = true,
     highlight = {
       enable = true,
-      disable = { "json", "markdown" },
+      disable = { "json" },
       additional_vim_regex_highlighting = { "ruby" },
     },
     indent = { enable = true, disable = { "ruby", "json", "markdown" } },
   },
-  init = function()
-    vim.o.foldmethod = "expr"
-    vim.o.foldexpr = "nvim_treesitter#foldexpr()"
-    vim.o.foldenable = true
-    vim.o.foldlevel = 99
-  end,
 }

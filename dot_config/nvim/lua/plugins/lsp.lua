@@ -79,6 +79,22 @@ return {
               includeInlayFunctionLikeReturnTypeHints = false,
               includeInlayEnumMemberValueHints = false,
             },
+            suggest = {
+              includeCompletionsForModuleExports = true,
+              includeCompletionsWithInsertText = true,
+              includeAutomaticOptionalChainCompletions = true,
+              includeCompletionsWithSnippetText = true,
+              includeCompletionsWithClassMemberSnippets = true,
+              includeCompletionsWithObjectLiteralMethodSnippets = true,
+              includeCompletionsWithImportStatements = true, -- Important pour voir les chemins d'importation
+            },
+            -- Activer l'affichage des détails complets pour les imports
+            implementationsCodeLens = {
+              enabled = true,
+            },
+            referencesCodeLens = {
+              enabled = true,
+            },
           },
           javascript = {
             inlayHints = {
@@ -89,6 +105,21 @@ return {
               includeInlayPropertyDeclarationTypeHints = false,
               includeInlayFunctionLikeReturnTypeHints = false,
               includeInlayEnumMemberValueHints = false,
+            },
+            suggest = {
+              includeCompletionsForModuleExports = true,
+              includeCompletionsWithInsertText = true,
+              includeAutomaticOptionalChainCompletions = true,
+              includeCompletionsWithSnippetText = true,
+              includeCompletionsWithClassMemberSnippets = true,
+              includeCompletionsWithObjectLiteralMethodSnippets = true,
+              includeCompletionsWithImportStatements = true,
+            },
+            implementationsCodeLens = {
+              enabled = true,
+            },
+            referencesCodeLens = {
+              enabled = true,
             },
           },
         },
