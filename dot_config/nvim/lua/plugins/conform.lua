@@ -1,59 +1,49 @@
 return {
-  "stevearc/conform.nvim",
-  event = { "BufWritePre" },
-  cmd = { "ConformInfo" },
+  "stevearc/conform.nvim", -- Format plugin
+  lazy = false,
   keys = {
     {
-      "<leader>cf",
-      function()
-        require("conform").format({ async = true, lsp_fallback = true })
-      end,
-      mode = "",
-      desc = "Format buffer",
+      "<leader>F",
+      '<CMD>lua require("conform").format({ lsp_fallback = true, async = true })<CR>',
+      desc = "Format code",
     },
   },
   opts = {
     formatters_by_ft = {
-      lua = { "stylua" },
-      python = { "isort", "black" },
-      javascript = { { "prettierd", "prettier" } },
-      typescript = { { "prettierd", "prettier" } },
-      javascriptreact = { { "prettierd", "prettier" } },
-      typescriptreact = { { "prettierd", "prettier" } },
-      json = { { "prettierd", "prettier" } },
-      html = { { "prettierd", "prettier" } },
-      css = { { "prettierd", "prettier" } },
-      scss = { { "prettierd", "prettier" } },
-      markdown = { { "prettierd", "prettier" } },
-      yaml = { { "prettierd", "prettier" } },
-      sh = { "shfmt" },
+      python = { "autopep8" },
+      javascript = { "prettier" },
+      javascriptreact = { "prettier" },
+      typescript = { "prettier" },
+      typescriptreact = { "prettier" },
+      mdx = { "prettier" },
+      md = { "prettier" },
+      json = { "prettier" },
+      astro = { "prettier" },
+      css = { "prettier" },
     },
-
-    formatters = {
-      stylua = {
-        prepend_args = { "--indent-type", "Spaces", "--indent-width", "2" },
-      },
-      prettier = {
-        prepend_args = { "--print-width", "100", "--tab-width", "2" },
-      },
-      black = {
-        prepend_args = { "--line-length", "88" },
-      },
-      shfmt = {
-        prepend_args = { "-i", "2" },
-      },
-    },
-
     format_on_save = {
       timeout_ms = 500,
       lsp_fallback = true,
-      quiet = true,
     },
-
-    format_after_save = {
-      lsp_fallback = true,
-    },
-
-    notify_on_error = true,
   },
+  config = function(_, opts)
+    local conform = require("conform")
+    local util = require("conform.util")
+    -- Custom formatters
+    local formatters = {
+      eslint_c = {
+        command = util.from_node_modules("eslint_d"),
+        args = { "--fix-to-stdout", "--stdin", "--stdin-filename", "$FILENAME" },
+        cwd = util.root_file({
+          ".eslintrc",
+          ".eslintrc.js",
+        }),
+        condition = function(self, ctx)
+          return util.root_file({ ".eslintrc", ".eslintrc.js" })(self, ctx) ~= nil
+        end,
+      },
+    }
+    opts["formatters"] = formatters
+    conform.setup(opts)
+  end,
 }

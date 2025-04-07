@@ -1,7 +1,8 @@
 return {
   "ellisonleao/gruvbox.nvim",
-  lazy = false,
   priority = 1000,
+  enabled = true,
+  lazy = false,
   config = function()
     require("gruvbox").setup({
       terminal_colors = true,
@@ -28,6 +29,7 @@ return {
       transparent_mode = false,
     })
 
+    -- Fonction pour basculer entre thème clair et sombre
     local toggle_theme = function()
       if vim.o.background == "dark" then
         vim.o.background = "light"
@@ -37,22 +39,21 @@ return {
       vim.cmd("colorscheme gruvbox")
     end
 
+    -- Fonction pour activer/désactiver la transparence
     local toggle_transparency = function()
-      local current_mode = require("gruvbox").config.transparent_mode
+      local gruvbox_config = require("gruvbox").config
+      local current_mode = gruvbox_config.transparent_mode
       require("gruvbox").setup({ transparent_mode = not current_mode })
       vim.cmd("colorscheme gruvbox")
     end
 
-    vim.o.background = "light"
+    -- Définir le thème initial
+    vim.o.background = "light" -- Commence en mode clair
     vim.cmd("colorscheme gruvbox")
 
-    vim.keymap.set("n", "<leader>bg", toggle_theme, { noremap = true, silent = true })
-
-    vim.keymap.set(
-      "n",
-      "<leader>bgs",
-      toggle_transparency,
-      { noremap = true, silent = true, desc = "Toggle transparency" }
-    )
+    -- Raccourcis clavier pour basculer les thèmes
+    vim.keymap.set("n", "<leader>bg", toggle_theme, { noremap = true, silent = true, desc = "Toggle light/dark theme" })
+    vim.keymap.set("n", "<leader>bgs", toggle_transparency,
+      { noremap = true, silent = true, desc = "Toggle transparency" })
   end,
 }
