@@ -6,7 +6,6 @@ return {
   },
   opts = {
     render_modes = true,
-
     heading = {
       width = "block",
       left_pad = 4,
@@ -43,17 +42,6 @@ return {
     },
     latex = {
       enabled = false,
-    },
-    integrations = {
-      image = {
-        enabled = true,
-        only_render_image_at_cursor = false,
-      },
-    },
-  },
-  overrides = {
-    buftype = {
-      nofile = { enabled = false },
     },
   },
 }
