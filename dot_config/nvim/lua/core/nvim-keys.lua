@@ -72,11 +72,6 @@ function keys.init()
   -- Search and replace
   vim.keymap.set("n", "<leader>si", [[:%s/]], { noremap = true, silent = false, desc = "Start search and replace" })
 
-  -- Special characters
-  vim.keymap.set("i", "<leader>;", "|", { noremap = true, silent = true, desc = "Insert | in insert mode" })
-  vim.keymap.set("n", "<leader>;", "i|<Esc>", { noremap = true, silent = true, desc = "Insert | in normal mode" })
-  vim.keymap.set("v", "<leader>;", "c|<Esc>", { noremap = true, silent = true, desc = "Replace selection with |" })
-
   -- Open URL
   vim.keymap.set("n", "<leader>à", function()
     local line = vim.fn.getline(".")
