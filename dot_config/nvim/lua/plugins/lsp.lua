@@ -22,7 +22,6 @@ return {
       "lua_ls",
       "pyright",
       "svelte",
-      "volar",
       "yamlls",
       "vtsls",
     }

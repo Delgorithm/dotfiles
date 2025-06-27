@@ -28,6 +28,7 @@ end
 
 local opts = require("core.nvim-opts")
 opts.init()
+
 local usercommand = require("core.nvim-usercmd")
 usercommand.init()
 

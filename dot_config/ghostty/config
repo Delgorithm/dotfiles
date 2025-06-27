@@ -1,0 +1,6 @@
+# [Theme]
+theme = "GruvboxDarkHard"
+
+# [cursor]
+cursor-style-blink = true
+cursor-invert-fg-bg
