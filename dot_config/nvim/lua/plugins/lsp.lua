@@ -10,8 +10,7 @@ return {
     { "luckasRanarison/tailwind-tools.nvim" },
   },
   config = function()
-    -- Default server
-    local managed_servers_list = {
+    local servers = {
       "astro",
       "cssls",
       "docker_compose_language_service",
@@ -21,48 +20,101 @@ return {
       "jsonls",
       "lua_ls",
       "pyright",
-      "svelte",
       "yamlls",
       "vtsls",
     }
 
-    local manual_servers_list = {
-      "ocamllsp",
-      "tailwindcss",
-      "gleam",
-    }
-
-    local servers_list = {}
-    table.move(managed_servers_list, 1, #managed_servers_list, 1, servers_list)
-    table.move(manual_servers_list, 1, #manual_servers_list, #servers_list + 1, servers_list)
-
     require("mason").setup()
     require("mason-lspconfig").setup({
-      ensure_installed = managed_servers_list,
+      ensure_installed = servers,
     })
+
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+    local function on_attach(_, bufnr)
+      local map = function(mode, lhs, rhs, desc)
+        vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+      end
+
+      map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+      map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+      map("n", "K", vim.lsp.buf.hover, "Hover")
+      map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+      map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
+      map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+      map("n", "gr", vim.lsp.buf.references, "References")
+      map("n", "<leader>D", vim.lsp.buf.type_definition, "Type definition")
+      map("n", "<leader>wl", function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+      end, "List workspace folders")
+    end
+
+    local border = {
+      { "╭", "FloatBorder" },
+      { "─", "FloatBorder" },
+      { "╮", "FloatBorder" },
+      { "│", "FloatBorder" },
+      { "╯", "FloatBorder" },
+      { "─", "FloatBorder" },
+      { "╰", "FloatBorder" },
+      { "│", "FloatBorder" },
+    }
+
+    local handlers = {
+      ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+      ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+    }
+
+    local lspconfig = require("lspconfig")
+    for _, server in ipairs(servers) do
+      if server ~= "tailwindcss" then
+        lspconfig[server].setup({
+          capabilities = capabilities,
+          on_attach = on_attach,
+          handlers = handlers,
+        })
+      end
+    end
+
+    lspconfig.tailwindcss.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      handlers = handlers,
+      filetypes = { "html", "css", "javascript", "typescript", "elixir", "heex", "eelixir" },
+      init_options = {
+        userLanguages = {
+          elixir = "html-eex",
+          eelixir = "html-eex",
+          heex = "html-eex",
+        },
+      },
+    })
+
+    require("elixir").setup({
+      elixirls = {
+        enable = true,
+        settings = require("elixir.elixirls").settings({
+          dialyzerEnabled = false,
+          enableTestLenses = false,
+        }),
+        on_attach = on_attach,
+        handlers = handlers,
+      },
+    })
+
     local cmp = require("cmp")
     local luasnip = require("luasnip")
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-    local lsp_config = require("lspconfig")
-    local utils = require("lspconfig.util")
 
-    -- Completion engine setup
     cmp.setup({
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
         end,
       },
-      window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-      },
       mapping = cmp.mapping.preset.insert({
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
@@ -88,108 +140,21 @@ return {
       }, {
         { name = "buffer" },
       }),
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      },
     })
-    -- End completion engine setup
 
-    -- Diagnostic customization
     vim.diagnostic.config({
       float = {
-        source = true,
         border = "rounded",
+        source = true,
       },
     })
 
-    -- Global key mapping
-    vim.keymap.set("n", "ge", vim.diagnostic.open_float, { desc = "open diagnostic popup" })
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-
-    -- Custom handlers to have border around hover window
-    local border = {
-      { "╭", "FloatBorder" },
-      { "─", "FloatBorder" },
-      { "╮", "FloatBorder" },
-      { "│", "FloatBorder" },
-      { "╯", "FloatBorder" },
-      { "─", "FloatBorder" },
-      { "╰", "FloatBorder" },
-      { "│", "FloatBorder" },
-    }
-
-    local handlers = {
-      ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = border,
-      }),
-    }
-
-    -- Callback executed when a server is attached to a buffer
-    local on_attach_callback = function(client, buffer)
-      vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration", buffer = buffer })
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition", buffer = buffer })
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover", buffer = buffer })
-      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation", buffer = buffer })
-      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename", buffer = buffer })
-      vim.keymap.set("n", "<leader>wl", function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-      end, { desc = "List workspace folders", buffer = buffer })
-      vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, { desc = "Go to type definition", buffer = buffer })
-      vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action", buffer = buffer })
-      vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Check references", buffer = buffer })
-    end
-
-    for _, value in pairs(servers_list) do
-      local server = lsp_config[value]
-      server.setup({
-        capabilities = capabilities,
-        on_attach = on_attach_callback,
-        handlers = handlers,
-      })
-    end
-
-    -- Language specific extensions
-    local elixir = require("elixir")
-    local elixirls = require("elixir.elixirls")
-
-    elixir.setup({
-      nextls = {
-        enable = false,
-        on_attach = on_attach_callback,
-        handlers = handlers,
-        init_options = {
-          mix_env = "dev",
-          mix_target = "host",
-          experimental = {
-            completions = {
-              enable = true, -- control if completions are enabled. defaults to false
-            },
-          },
-        },
-      },
-      credo = {},
-      elixirls = {
-        enable = true,
-        settings = elixirls.settings({
-          dialyzerEnabled = false,
-          enableTestLenses = false,
-        }),
-        on_attach = on_attach_callback,
-        handlers = handlers,
-      },
-    })
-
-    -- Tailwind setup
-    lsp_config.tailwindcss.setup(vim.tbl_extend("force", {
-      capabilities = capabilities,
-      handlers = handlers,
-    }, {
-      filetypes = { "html", "elixir", "eelixir", "heex" },
-      init_options = {
-        userLanguages = {
-          elixir = "html-eex",
-          eelixir = "html-eex",
-          heex = "html-eex",
-        },
-      },
-    }))
+    vim.keymap.set("n", "ge", vim.diagnostic.open_float, { desc = "Open diagnostics" })
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
   end,
 }

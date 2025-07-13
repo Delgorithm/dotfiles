@@ -1,20 +1,16 @@
 return {
-  "stevearc/conform.nvim", -- Format plugin
+  "stevearc/conform.nvim",
   lazy = false,
   keys = {
-    {
-      "<leader>F",
-      '<CMD>lua require("conform").format({ lsp_fallback = true, async = true })<CR>',
-      desc = "Format code",
-    },
+    { "<leader>F", '<CMD>lua require("conform").format({ lsp_fallback = true, async = true })<CR>', desc = "Format code" },
   },
   opts = {
     formatters_by_ft = {
       python = { "autopep8" },
-      javascript = { "prettier" },
-      javascriptreact = { "prettier" },
-      typescript = { "prettier" },
-      typescriptreact = { "prettier" },
+      javascript = { "eslint_c", "prettier" },
+      javascriptreact = { "eslint_c", "prettier" },
+      typescript = { "eslint_c", "prettier" },
+      typescriptreact = { "eslint_c", "prettier" },
       mdx = { "prettier" },
       md = { "prettier" },
       json = { "prettier" },
@@ -22,6 +18,7 @@ return {
       css = { "prettier" },
     },
     format_on_save = {
+      quiet = true,
       timeout_ms = 500,
       lsp_fallback = true,
     },
@@ -29,6 +26,7 @@ return {
   config = function(_, opts)
     local conform = require("conform")
     local util = require("conform.util")
+
     -- Custom formatters
     local formatters = {
       eslint_c = {
@@ -40,10 +38,11 @@ return {
         }),
         condition = function(self, ctx)
           return util.root_file({ ".eslintrc", ".eslintrc.js" })(self, ctx) ~= nil
-        end,
-      },
+        end
+      }
     }
+
     opts["formatters"] = formatters
     conform.setup(opts)
-  end,
+  end
 }
