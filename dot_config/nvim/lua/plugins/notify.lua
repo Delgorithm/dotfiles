@@ -1,9 +1,16 @@
 return {
   "rcarriga/nvim-notify",
-  commit = "d333b6f167900f6d9d42a59005d82919830626bf",
-  opts = {
-    timeout = 3000,
-    render = "minimal",
-    top_down = false,
-  },
+  lazy = false,
+  priority = 1000,
+  config = function()
+    local notify = require("notify")
+    notify.setup({
+      stages = "fade",
+      render = "default",
+      timeout = 3000,
+      top_down = true,
+    })
+
+    vim.notify = notify
+  end,
 }

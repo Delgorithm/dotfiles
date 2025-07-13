@@ -11,6 +11,9 @@ return {
       "html",
       "elixir",
       "php",
+      "go",
+      "gleam",
+      "rust",
       "jsdoc",
       "json",
       "markdown",
@@ -20,6 +23,7 @@ return {
       "tsx",
       "vue",
       "svelte",
+      "zig",
     },
     highlight = {
       enable = true,
