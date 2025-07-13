@@ -4,3 +4,10 @@ theme = "GruvboxDarkHard"
 # [cursor]
 cursor-style-blink = true
 cursor-invert-fg-bg
+
+# [Background]
+background-opacity = 0.6
+background-blur = true
+
+# [Window Padding]
+# window-padding-x = 2,4
