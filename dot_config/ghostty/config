@@ -1,13 +1,18 @@
+# [Title]
+title = " "
+
+# [Window Decoration & Decoration]
+macos-titlebar-style = hidden
+
 # [Theme]
-theme = "GruvboxDarkHard"
+theme = "Gruvbox Dark Hard"
 
 # [cursor]
+cursor-style = block 
 cursor-style-blink = true
 cursor-invert-fg-bg
+shell-integration-features = no-cursor
 
 # [Background]
 background-opacity = 0.6
 background-blur = true
-
-# [Window Padding]
-# window-padding-x = 2,4

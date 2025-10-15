@@ -40,7 +40,7 @@ return {
           delay = 200,
           reveal = { "close" },
         },
-        separator_style = "padded_slant"
+        separator_style = "slant"
       },
     })
   end,
