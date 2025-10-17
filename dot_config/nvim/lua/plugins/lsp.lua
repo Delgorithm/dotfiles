@@ -22,6 +22,7 @@ return {
       "pyright",
       "yamlls",
       "vtsls",
+      "tailwindcss",
     }
 
     require("mason").setup()
@@ -67,26 +68,27 @@ return {
 
     require("mason-lspconfig").setup_handlers({
       function(server_name)
-        require("lspconfig")[server_name].setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          handlers = handlers,
-        })
-      end,
-      ["tailwindcss"] = function()
-        require("lspconfig").tailwindcss.setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          handlers = handlers,
-          filetypes = { "html", "css", "javascript", "typescript", "elixir", "heex", "eelixir" },
-          init_options = {
-            userLanguages = {
-              elixir = "html-eex",
-              eelixir = "html-eex",
-              heex = "html-eex",
+        if server_name == "tailwindcss" then
+          require("lspconfig").tailwindcss.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            handlers = handlers,
+            filetypes = { "html", "css", "javascript", "typescript", "elixir", "heex", "eelixir" },
+            init_options = {
+              userLanguages = {
+                elixir = "html-eex",
+                eelixir = "html-eex",
+                heex = "html-eex",
+              },
             },
-          },
-        })
+          })
+        else
+          require("lspconfig")[server_name].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            handlers = handlers,
+          })
+        end
       end,
     })
 
