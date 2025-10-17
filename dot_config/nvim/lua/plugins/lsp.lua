@@ -65,29 +65,29 @@ return {
       ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
     }
 
-    local lspconfig = require("lspconfig")
-    for _, server in ipairs(servers) do
-      if server ~= "tailwindcss" then
-        lspconfig[server].setup({
+    require("mason-lspconfig").setup_handlers({
+      function(server_name)
+        require("lspconfig")[server_name].setup({
           capabilities = capabilities,
           on_attach = on_attach,
           handlers = handlers,
         })
-      end
-    end
-
-    lspconfig.tailwindcss.setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      handlers = handlers,
-      filetypes = { "html", "css", "javascript", "typescript", "elixir", "heex", "eelixir" },
-      init_options = {
-        userLanguages = {
-          elixir = "html-eex",
-          eelixir = "html-eex",
-          heex = "html-eex",
-        },
-      },
+      end,
+      ["tailwindcss"] = function()
+        require("lspconfig").tailwindcss.setup({
+          capabilities = capabilities,
+          on_attach = on_attach,
+          handlers = handlers,
+          filetypes = { "html", "css", "javascript", "typescript", "elixir", "heex", "eelixir" },
+          init_options = {
+            userLanguages = {
+              elixir = "html-eex",
+              eelixir = "html-eex",
+              heex = "html-eex",
+            },
+          },
+        })
+      end,
     })
 
     require("elixir").setup({

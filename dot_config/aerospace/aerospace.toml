@@ -41,7 +41,7 @@ alt-shift-cmd-leftSquareBracket = "resize smart +50"
 # Equalize window sizes
 alt-shift-r = "flatten-workspace-tree"
 
-# Workspace navigation (limité à 4 workspaces)
+# Workspace navigation
 alt-1 = "workspace 1"
 alt-2 = "workspace 2"
 alt-3 = "workspace 3"
@@ -69,9 +69,9 @@ alt-shift-semicolon = "mode service"
 [workspace-to-monitor-force-assignment]
 1 = "main"
 2 = "main"
-3 = "HUAWEI AD80HW"
-4 = "HUAWEI AD80HW"
-5 = "HUAWEI AD80HW"
+3 = "main"
+4 = "main"
+5 = "main"
 
 [mode.service.binding]
 esc = ['reload-config', 'mode main']
@@ -83,3 +83,5 @@ alt-shift-h = ['join-with left', 'mode main']
 alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
+
+
