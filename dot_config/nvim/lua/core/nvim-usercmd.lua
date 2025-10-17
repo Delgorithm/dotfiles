@@ -7,8 +7,19 @@ function usercmd.init()
     print('Copied relative filepath: ' .. filepath)
   end
 
-  -- Create a command to call the function
+  local function delete_all_pack()
+    local pack_specs = vim.pack.get()
+    local pack_name_tbl = {}
+    for _, pack in ipairs(pack_specs) do
+      table.insert(pack_name_tbl, pack.spec.name)
+    end
+    vim.pack.del(pack_name_tbl)
+  end
+
+
   vim.api.nvim_create_user_command('CopyRelativeFilepath', copy_relative_filepath, {})
+  vim.api.nvim_create_user_command('DelAllPack', delete_all_pack, {})
+  vim.api.nvim_create_user_command('ToggleCentered', require("stay-centered").toggle, {})
 end
 
 return usercmd
