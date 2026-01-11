@@ -1,0 +1,29 @@
+vim.opt.autoread = true
+vim.opt.autowrite = true
+vim.o.clipboard = "unnamedplus"
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
+vim.opt.number = true
+vim.opt.mouse = "a"
+vim.o.swapfile = false
+
+vim.opt.list = false
+vim.opt.listchars = "eol:↴"
+
+vim.opt.signcolumn = "yes"
+vim.opt.wrap = false
+vim.opt.completeopt = { "menu", "menuone", "noselect", "preview" }
+vim.o.shiftwidth = 2
+vim.o.tabstop = 2
+vim.o.softtabstop = 2
+vim.o.sidescrolloff = 8
+vim.o.scrolloff = 4
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.confirm = true
+vim.opt.cursorline = true
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+vim.opt.winbar = ""
+vim.opt.mousescroll = "ver:3,hor:0"
+vim.o.undofile = true

@@ -1,0 +1,21 @@
+# [Title]
+title = " "
+
+# [Window Decoration & Decoration]
+macos-titlebar-style = hidden
+
+# [Theme]
+theme = "Gruvbox Dark Hard"
+
+# [Font Familiy]
+font-family = "JetBrainsMono Nerd Front Propo"
+
+# [cursor]
+cursor-style = block 
+cursor-style-blink = true
+cursor-invert-fg-bg
+shell-integration-features = no-cursor
+
+# [Background]
+background-opacity = 0.6
+background-blur = true
